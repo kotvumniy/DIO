@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/styles.css">
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="icon"
+          href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQbrga98UQ53b2me7QXCILqy9HVJEuA_YZkizojHIPaA&s"
+          type="image/x-icon">
+</head>
+<body class="my-background">
+{% include "navbar.html"%}
+<div class="container-xl my-content2"
+     style="padding:30px; width: 50%; position: absolute; top: 25%; left: 25%; border-radius: 1pc;">
+    <form class="mt-5" method="post">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.name.label(class="form-label font-color") }}
+            {{ form.name(class="form-control font-color", placeholder=form.name.label.text ) }}
+        </div>
+        <div class="mb-3">
+            {{ form.price.label( class="form-label font-color") }}
+            {{ form.price( class="form-control font-color", placeholder=form.price.label.text ) }}
+        </div>
+        <div class="mb-3">
+            {{ form.category_id.label( class="form-label font-color") }}
+            {{ form.category_id( class="form-control font-color", placeholder=form.category_id.label.text ) }}
+        </div>
+        <div class="mb-3">
+            {{ form.text.label( class="form-label font-color") }}
+            {{ form.text( class="form-control font-color", placeholder=form.text.label.text ) }}
+        </div>
+        <div class="mb-3">
+            {{ form.image_url.label(class="form-label font-color") }}<br>
+            {{ form.image_url(class="form-control font-color", placeholder=form.image_url.label.text) }}
+        </div>
+        {{ form.submit(class="btn btn-primary font-color") }}
+    </form>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+            aria-controls="offcanvasScrolling">Categories and IDs
+    </button>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+         id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header font-color" style="background-color: #3e0161; border: solid">
+            <h5 class="offcanvas-title " id="offcanvasScrollingLabel">Categories and IDs</h5>
+            <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body my-content2 font-color" style="border: solid">
+            {% for category in categories %}
+            <h2>{{category.name}} : {{category.id}}</h2>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="/static/search.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-xl my-content font-color" style="padding-bottom:1%">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner" style="border-radius: 2pc;">
+            <div class="carousel-item active">
+                <img style="border-radius: 1pc;" width="450" height="400"
+                     src="https://marco.ge/public/uploads/img/img_651a9f70d41ae_1696243568869.jpg"
+                     class="d-block w-100% center" alt="image discription">
+            </div>
+            <div class="carousel-item">
+                <img style="border-radius: 1pc;" width="450" height="400"
+                     src="https://marco.ge/public/uploads/img/img_65bcd7dc76089_1706874844483.jpg"
+                     class="d-block w-100% center" alt="image discription">
+            </div>
+            <div class="carousel-item">
+                <img style="border-radius: 1pc;" width="450" height="400"
+                     src="https://marco.ge/public/uploads/img/img_65bcd83ab310b_1706874938733.jpg"
+                     class="d-block w-100% center" alt="image discription">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <br>
+    <h1>Furniture</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="hp">
+        {% for furniture in furnitures %}
+        <div class="col-lg-3 ">
+            <div class="card" style="width: 100%; top: 2%; height: 525px; border-radius: 1pc;">
+                <img style="border-radius: 1pc;" height="290px" src="{{furniture.image_url}}"
+                     class="card-img-top" alt="Image description">
+                <div class="card-body">
+                    <h5 class="card-title">{{furniture.name}}</h5>
+                    <p class="card-text text">{{furniture.price}} ₾</p>
+                    <a href="/product/{{furniture.id}}" class="btn btn-primary" style="position:bottom ">Buy</a>
+                    {% if current_user.role == "admin" %}
+                    <a href="/edit_product/{{furniture.id}}" class="btn btn-primary" style="position:bottom ">Edit</a>
+                    <a href="/delete_product/{{furniture.id}}" class="btn btn-primary" style="position:bottom ">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+    <br>
+    <div class="container-fluid mt-4 p-5 jumb-color font-color rounded ">
+        <h1 class="text-white">Bestseller Products</h1>
+        <div class="row align-items-center">
+            <div class="col" style="border-radius: 1pc;">
+                <div class="card mb-3" style="max-width: 590px; border-radius: 1pc; ">
+                    <div class="row g-0" style="border-radius: 1pc;">
+                        <div class="col-md-4 d-flex align-items-center justify-content-center "
+                             style="border-radius: 1pc;">
+                            <img height="100%"
+                                 src="https://gorgia.ge/images/ab__webp/thumbnails/1223/1000/detailed/56/BM-00187936_pool_jpg.webp"
+                                 class="img-fluid rounded-start " alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body1" style="padding: 15px;">
+                                <h5 class="card-title">კარკასული აუზი 2.59mx1.70mx61cm Pool</h5>
+                                <div class="row justify-content-center">
+                                    <div class="col">
+                                        <p class="card-text text">ბრენდი BESTWAY<br>
+                                            სიგრძე 0.3 მ<br>
+                                            სიგანე 0.3 მ<br>
+                                            სიმაღლე 0.3 მ<br>
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text text">ფასი: 291.00 ₾</p>
+                                        <a href="/product/2" class="btn btn-primary"
+                                           style="position:bottom-right ">Buy</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-3" style="max-width: 590px; border-radius: 1pc; ">
+                    <div class="row g-0" style="border-radius: 1pc;">
+                        <div class="col-md-4 d-flex align-items-center justify-content-center "
+                             style="border-radius: 1pc;">
+                            <img height="100%"
+                                 src="https://gorgia.ge/images/ab__webp/thumbnails/1223/1000/detailed/56/BM-00187930_Frame_pool_jpg.webp"
+                                 class="img-fluid rounded-start " alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body1" style="padding: 15px;">
+                                <h5 class="card-title">კარკასული აუზი 4.27mx1.07m Pool Set</h5>
+                                <div class="row justify-content-center">
+                                    <div class="col">
+                                        <p class="card-text text">ბრენდი BESTWAY<br>
+                                            სიგრძე 0.3 მ<br>
+                                            სიგანე 0.3 მ<br>
+                                            სიმაღლე 0.3 მ<br>
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text text">ფასი: 1154.50 ₾</p>
+                                        <a href="/product/3" class="btn btn-primary"
+                                           style="position:bottom-right ">Buy</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <h1>ACs</h1>
+    <div class="col-12 row">
+        {% for ac in AC %}
+        <div class="col-3">
+            <div class="card" style="width: 100%; top: 2%; height: 525px; border-radius: 1pc;">
+                <img style="border-radius: 1pc;" height="290px" src="{{ac.image_url}}"
+                     class="card-img-top" alt="Image discription">
+                <div class="card-body">
+                    <h5 class="card-title">{{ac.name}}</h5>
+                    <p class="card-text text">{{ac.price}} ₾</p>
+                    <a href="/product/{{ac.id}}" class="btn btn-primary"
+                       style="position:bottom ">Buy</a>
+                    {% if current_user.role == "admin" %}
+                    <a href="/edit_product/{{ac.id}}" class="btn btn-primary" style="position:bottom ">Edit</a>
+                    <a href="/delete_product/{{ac.id}}" class="btn btn-primary"
+                       style="position:bottom ">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div><br>
+    <div class="col-12 row">
+        <div class="col-6">
+            <a href="/products/1"><img width="100%"
+                                       src="https://gorgia.ge/images/ab__webp/abt__ut2/banners/all/56/avav_png.webp"></a>
+            <br><br>
+            <a href="/products/4"><img width="100%"
+                                       src="https://gorgia.ge/images/ab__webp/abt__ut2/banners/all/56/ebi_png.webp"></a>
+        </div>
+        <div class="col-6">
+            <a href="/products/3"><img width="100%" height="780"
+                                       src="https://gorgia.ge/images/ab__webp/abt__ut2/banners/all/56/gag_png.webp"></a>
+        </div>
+    </div><br>
+    <h1>Pools</h1>
+    <div class="col-12 row align-items-center ">
+        {% for pool in pools %}
+        <div class="col-3">
+            <div class="card" style="width: 100%; top: 2%; height: 525px; border-radius: 1pc;">
+                <img style="border-radius: 1pc;" height="290px" src="{{pool.image_url}}"
+                     class="card-img-top" alt="Image discription">
+                <div class="card-body">
+                    <h5 class="card-title">{{pool.name}}</h5>
+                    <p class="card-text text">{{pool.price}} ₾</p>
+                    <a href="/product/{{pool.id}}" class="btn btn-primary"
+                       style="position:bottom ">Buy</a>
+                    {% if current_user.role == "admin" %}
+                    <a href="/edit_product/{{pool.id}}" class="btn btn-primary" style="position:bottom ">Edit</a>
+                    <a href="/delete_product/{{pool.id}}" class="btn btn-primary"
+                       style="position:bottom ">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div><br>
+</div>
+
+{% endblock %}

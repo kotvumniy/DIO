@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-xl my-content font-color" style="padding-bottom:1%">
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="hp">
+        {% for product in products %}
+        <div class="col-lg-3 ">
+            <div class="card" style="width: 100%; top: 2%; height: 525px; border-radius: 1pc;">
+                <img style="border-radius: 1pc;"   height="290px" src="{{product.image_url}}"
+                     class="card-img-top" alt="Image discription">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text text">{{product.price}} ₾</p>
+                    <a href="/product/{{product.id}}" class="btn btn-primary"  style="position:bottom ">Buy</a>
+                    {% if current_user.role == "admin" %}
+                    <a href="/edit_product/{{product.id}}" class="btn btn-primary"  style="position:bottom ">Edit</a>
+                    <a href="/delete_product/{{product.id}}" class="btn btn-primary"  style="position:bottom ">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg  bg-body-tertiary border-bottom border-body sticky-top"
+     data-bs-theme="dark" style="background-color:black">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="/static/images/Screenshot_8.png" alt="Logo" width="150"
+                 class="d-inline-block align-text-middle bigger_font ">
+            DIO</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Products
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for category in categories %}
+                        <li><a class="dropdown-item" href="/products/{{category.id}}">{{category.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% if current_user.role == "admin" %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Admin Panel
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/add_product">Add Product</a></li>
+                        <li><a class="dropdown-item" href="/add_category">Add Category</a></li>
+                        <li><a class="dropdown-item" href="/users">See Users</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="d-flex">
+                <input id="searchInput" class="form-control me-2" type="search" placeholder="Search"
+                       aria-label="Search">
+                <button id="searchButton" class="btn btn-outline-success" type="submit">Search</button>
+            </div>
+            <form class="d-flex " role="search">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item dropdown" style="margin-bottom: 18px">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="{{ url_for('static', filename='ProfilePiqtures/' + current_user.profile_piqture) }}" alt="Avatar"
+                             class="avatar">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                        <li><a class="dropdown-item" href="/profile/{{ current_user.id }}">Profile</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <button class="btn btn-outline-success mx-2" type="submit" formaction="/log">Log In</button>
+                <button class="btn btn-outline-success " type="submit" formaction="/reg">Register</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</nav>
