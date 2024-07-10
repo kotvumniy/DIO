@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-xl my-content font-color" style="padding-bottom:1%">
+    <div class="container mt-4">
+        <div class="col-12 row align-items-center ">
+            {% for product in products %}
+            <div class="col-3">
+                <div class="card" style="width: 100%; top: 2%; height: 525px; border-radius: 1pc;">
+                    <img style="border-radius: 1pc;" height="290px" src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <a href="/product/{{ product.id }}" class="btn btn-primary">Shop Now</a>
+                        <a href="/remove_from_cart/{{ product.id }}" class="btn btn-danger">Remove From Cart</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

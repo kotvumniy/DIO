@@ -6,30 +6,37 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 import os
 category_ids = [1, 3]
+from flask import session
 
-
+def get_cart_items():
+    return session.get('cart', [])
 @app.route("/")
 def home_page():
     furnitures = Product.query.filter(Product.category_id.in_(category_ids)).limit(4).all()
     AC = Product.query.filter_by(category_id=2).limit(4).all()
     pools = Product.query.filter_by(category_id=4).limit(4).all()
+    cart_items = len(get_cart_items())
     return render_template("main_page.html", products=Product.query.all(), categories=ProductCategory.query.all(),
-                           AC=AC, User=User.query.all(), furnitures=furnitures, pools = pools)
+                           AC=AC, User=User.query.all(), furnitures=furnitures, pools = pools, cart_items=cart_items)
 
 
 @app.route("/product/<int:id>")
 def product(id):
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     product = Product.query.get(id)
     category_id = product.category_id
     same_category_products = Product.query.filter_by(category_id= category_id).filter(Product.id != id).limit(4).all()
     if not product:
         return render_template("404.html", id=id)
 
-    return render_template("product.html", product=product, categories=ProductCategory.query.all(), product_category = same_category_products)
+    return render_template("product.html", product=product, categories=ProductCategory.query.all(), product_category = same_category_products, cart_items=length)
 
 
 @app.route("/log", methods=["POST", "GET"])
 def log():
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     form = LoginUser()
     if form.validate_on_submit():
         user = User.query.filter(User.email == form.email.data).first()
@@ -38,7 +45,7 @@ def log():
             return redirect("/")
         else:
             print(form.errors)
-    return render_template("log_in.html", form=form, categories=ProductCategory.query.all())
+    return render_template("log_in.html", form=form, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/logout", methods=["POST", "GET"])
@@ -49,6 +56,8 @@ def logout():
 
 @app.route("/reg", methods=["POST", "GET"])
 def register():
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     form = RegisterUser()
     if form.validate_on_submit():
         file = form.profile_picture.data
@@ -70,12 +79,14 @@ def register():
         return redirect("/")
     else:
         print(form.errors)
-    return render_template("register.html", form=form, categories=ProductCategory.query.all())
+    return render_template("register.html", form=form, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/add_product", methods=['GET', 'POST'])
 @login_required
 def add_product():
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     if current_user.role != "admin":
         return redirect("/")
     form = AddProductClass()
@@ -88,12 +99,14 @@ def add_product():
         db.session.add(new_product)
         db.session.commit()
         return redirect("/")
-    return render_template("add_product.html", form=form, categories=ProductCategory.query.all())
+    return render_template("add_product.html", form=form, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/edit_product/<int:id>", methods=["POST", "GET"])
 @login_required
 def edit_product(id):
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     product = Product.query.get(id)
     if not product:
         return render_template("404.html", id=id)
@@ -113,7 +126,7 @@ def edit_product(id):
     else:
         print(form.errors)
 
-    return render_template("edit_product.html", form=form, categories=ProductCategory.query.all())
+    return render_template("edit_product.html", form=form, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/delete_product/<int:id>", methods=["DELETE", "GET"])
@@ -130,6 +143,8 @@ def delete_product(id):
 @app.route("/add_category", methods=['GET', 'POST'])
 @login_required
 def addCategory():
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     form = AddProductCategory()
     if form.validate_on_submit():
         new_category = ProductCategory(name=form.category_name.data,
@@ -139,26 +154,30 @@ def addCategory():
         return redirect("/")
     else:
         print(form.errors)
-    return render_template("add_category.html", form=form, categories=ProductCategory.query.all())
+    return render_template("add_category.html", form=form, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/products/<int:category_id>")
 @app.route("/products")
 def products(category_id):
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     if category_id:
         products = ProductCategory.query.get(category_id).products
     else:
         products = Product.query.all()
-    return render_template("products.html", products=products, categories=ProductCategory.query.all())
+    return render_template("products.html", products=products, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/profile/<int:user_id>")
 @login_required
 def profile(user_id):
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
     user = User.query.get(user_id)
     if not user:
         return render_template("404.html", id=user_id)
-    return render_template("profile.html", user=user, categories=ProductCategory.query.all())
+    return render_template("profile.html", user=user, categories=ProductCategory.query.all(), cart_items=length)
 
 
 @app.route("/search/<string:name>")
@@ -171,3 +190,31 @@ def search(name):
 def users():
     users = User.query.all()
     return render_template("users.html", users=users)
+
+@app.route("/cart")
+def cart():
+    cart_product_ids = get_cart_items()
+    length = len(cart_product_ids)
+    if cart_product_ids:
+        products = Product.query.filter(Product.id.in_(cart_product_ids)).all()
+    else:
+        products = []
+    return render_template('cart.html', products=products, cart_items=length, categories=ProductCategory.query.all())
+
+
+@app.route('/add_to_cart/<int:item_id>', methods=['GET', 'POST'])
+def add_to_cart(item_id):
+    cart = session.get('cart', [])
+    cart.append(item_id)
+
+    session['cart'] = cart
+    return redirect("/")
+
+@app.route('/remove_from_cart/<int:item_id>')
+def remove_from_cart(item_id):
+    cart = session.get('cart', [])
+    if item_id in cart:
+        cart.remove(item_id)
+        session['cart'] = cart
+
+    return redirect("/cart")

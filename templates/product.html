@@ -21,9 +21,12 @@
                 <h1 style="font-size: 2rem; margin-bottom: 20px;">{{product.name}}</h1>
                 <p style="font-size: 1.5rem; margin-bottom: 20px;">{{product.price}} ₾</p>
                 <p style="margin-bottom: 20px;">{{product.text}}</p>
+                <form action="/add_to_cart/{{product.id }}" method="post">
+                    <input type="hidden" name="item_id" value="{{product.id}}">
                 <button class="btn btn-primary btn-lg"
                         style="background-color: #391E39; border-color: #391E39; color: white;">Add to Cart
                 </button>
+                </form>
             </div>
         </div>
     </div><br><br>
